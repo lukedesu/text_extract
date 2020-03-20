@@ -1,0 +1,111 @@
+<div class="dcp-pdp" data-test-id="pdp">
+  <sticky-bar
+    class="dcp-pdp__sticky-bar"
+    :class="{ 'dcp-pdp__sticky-bar--show': showStickyBar }">
+    <div class="dcp-pdp-sticky-bar-content__price dcp-pdp-sticky-bar-price" v-if="product.price && product.price.formattedValue">
+      <span class="dcp-pdp-sticky-bar-price__label">{{ $t('dcp.pdp.stickyBar.priceLabel') }}</span>
+      <span class="dcp-pdp-sticky-bar-price__amount">{{ product.price.formattedValue }}</span>
+    </div>
+    <div class="dcp-pdp-sticky-bar-content__actions dcp-pdp-sticky-bar-actions">
+      <a class="dcp-pdp-sticky-bar-actions__contact-seller wb2-btn-03" @click="openContactModal">
+        <icon-call class="wb2-btn-03__icon" />{{ $t('dcp.pdp.buybox.contactSeller') }}
+      </a>
+      <button
+        v-if="!disableDirectCheckout"
+        class="dcp-pdp-sticky-bar-actions__main-cta wb2-btn-01"
+        @click="addProductToCart">
+        {{ $t('dcp.pdp.buybox.mainCta') }}
+      </button>
+    </div>
+  </sticky-bar>
+  <div class="dcp-pdp__back-navigation">
+    <back-navigation />
+  </div>
+  <div class="dcp-pdp__teaser" :style="{ '--dcp-image-slider-height': imageHeight + 'px' }">
+    <div class="dcp-pdp-teaser">
+      <div class="dcp-pdp-teaser__vehicle-presentation dcp-pdp-vehicle-presentation">
+        <image-slider
+          class="dcp-pdp-vehicle-presentation__image-slider"
+          v-if="product.images && product.images.length > 0"
+          :images="product.images"
+          :is-out-of-stock="isOutOfStock"
+        />
+        <legal-notice class="dcp-pdp-vehicle-presentation__legal-notice" />
+      </div>
+      <div class="dcp-pdp-teaser__buy-box">
+        <buy-box
+          v-intersection-observer="{}"
+          :vehicle="product"
+          :emico="product.emicoData"
+          :allow-price-negotiation="product.allowPriceNegotiation"
+          :page-footnotes="pageFootnotes"
+          @contact="openContactModal"
+          @trigger-checkout="addProductToCart"
+          @trigger-request-quote="triggerRequestQuote"
+          @viewport-entered="showStickyBar = false"
+          @viewport-left="showStickyBar = true"
+        />
+      </div>
+    </div>
+  </div>
+  <error-handler :context="['add-to-cart']" />
+  <div
+    class="dcp-pdp__content-switch dcp-pdp-content-switch"
+    v-if="vehicleData && product.emicoData">
+    <content-switch :config="contentSwitchConfig">
+      <template slot="contentSlot1">
+        <vehicle-details
+          v-if="vehicleData || product.emicoData"
+          :vehicle="vehicleData"
+          :emico="product.emicoData"
+        />
+      </template>
+      <template slot="contentSlot2">
+        <vehicle-equipment
+          v-if="product.carEquipments.length > 0"
+          :equipment-list="product.carEquipments"
+        />
+        <div v-else class="dcp-pdp-content-switch__missing">
+          {{ $t('dcp.pdp.vehicleEquipment.missing') }}
+        </div>
+      </template>
+    </content-switch>
+  </div>
+  <div
+    class="dcp-pdp__finance-calculator dcp-pdp-finance-calculator"
+    v-show="fincalcEnabled && fincalcState == 'ready'">
+    <h2 class="dcp-pdp-finance-calculator__title">
+      {{ $t('dcp.pdp.financeCalculator.title') }}
+    </h2>
+    <finance-calculator
+      v-if="vehicleId"
+      :caller="caller"
+      :market="market"
+      :locale="locale"
+      :vehicle="product"
+      :vehicleId="vehicleId"
+      :environment="environment"
+      @update="updateQuote"
+      @error="handleFinCalcError"
+    />
+  </div>
+  <div
+    v-if="showDealerLocator && dealerId"
+    class="dcp-pdp__dealer-locator dcp-pdp-dealer-locator">
+    <h2 class="dcp-pdp-dealer-locator__title">
+      {{ $t('dcp.pdp.dealerLocator.title') }}
+      <sup
+        class="dcp-pdp-dealer-locator-title__reference"
+        @click.stop="scrollToFootnotes">
+        [{{ disclaimerFootnote.referenceNumber }}]
+      </sup>
+    </h2>
+    <dealer-locator :dealer-id="dealerId" />
+  </div>
+  <!-- OTOS-621 remove contact me from core, now contact me is part of RFQ journey -->
+  <rfq-container
+    :open="showRequestOfferModal"
+    :product-code="product.code"
+    @close-rfq-modal="closeRfqRequestModal"
+  />
+</div>

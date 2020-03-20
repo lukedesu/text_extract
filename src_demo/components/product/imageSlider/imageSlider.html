@@ -1,0 +1,46 @@
+<v-touch @swipeleft="previousImage" @swiperight="nextImage" data-test-id="image-slider__touch" class="dcp-image-slider">
+  <transition-group class="dcp-image-slider__stage-image dcp-image-slider-stage-image"
+    :data-test-id="`dcp-image-slider-stage-image-${index}`" name="dcp-fade" tag="div" :key="image.url"
+    v-for="(image, index) in images">
+    <!--
+      The ambilight-crop div alignes with the black shadow in such
+      a way that the ambilight is only visible on top of the black shadow
+    -->
+    <div :key="image.url + '0'" v-if="index == currentImageIndex">
+      <loading-spinner class="dcp-image-slider-stage-image__loading" v-if="!imagesLoaded[currentImageIndex]"
+        type="dark"></loading-spinner>
+      <div class="dcp-image-slider-stage-image__image-wrapper"
+        :class="{ 'dcp-image-slider-stage-image__image-wrapper--show': imagesLoaded[currentImageIndex] }">
+        <div class="dcp-image-slider-stage-image__ambilight-crop dcp-image-slider-stage-image-ambilight-crop">
+          <!-- The ambient light itself is just a scaled copy of the original image blurred out -->
+          <img class="dcp-image-slider-stage-image-ambilight-crop__ambilight" :src="image.url | imageUrlDcpMedia"
+            :key="image.url + '1'">
+        </div>
+        <img @load="onImageLoad(index)" class="dcp-image-slider-stage-image__image" :src="image.url | imageUrlDcpMedia"
+          :key="image.url + '2'" id="image-slider">
+      </div>
+    </div>
+  </transition-group>
+  <div class="dcp-image-slider__online-indicator" v-if="onlineAvailability">
+    <span v-if="isOutOfStock">{{ $t('dcp.pdp.currentlyUnavailable') }}</span>
+    <span v-else>{{ $t('dcp.pdp.onlineAvailability') }}</span>
+  </div>
+  <div v-if="images.length > 1" class="dcp-image-slider__arrows dcp-image-slider-arrows">
+    <div class="dcp-image-slider-arrows__arrow dcp-image-slider-arrows__arrow--left" @click="previousImage"
+      data-test-id="image-slider-arrows__arrow--left">
+      <icon-arrow class="dcp-image-slider-arrows__svg dcp-image-slider-arrows__svg--left"></icon-arrow>
+    </div>
+    <div class="dcp-image-slider-arrows__arrow dcp-image-slider-arrows__arrow--right" @click="nextImage"
+      data-test-id="image-slider-arrows__arrow--right">
+      <icon-arrow class="dcp-image-slider-arrows__svg"></icon-arrow>
+    </div>
+  </div>
+  <div v-if="images.length > 1" class="dcp-image-slider__image-slider-pager dcp-image-slider-image-slider-pager">
+    <div class="dcp-image-slider-image-slider-pager__clickable-area" v-for="(image, index) in images"
+      @click="goToImage(index)" data-test-id="image-slider-image-slider-pager__clickable-area">
+      <div class="dcp-image-slider-image-slider-pager__bar"
+        :class="{ 'dcp-image-slider-image-slider-pager__bar--active': index === currentImageIndex }">
+      </div>
+    </div>
+  </div>
+</v-touch>

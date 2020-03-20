@@ -1,0 +1,56 @@
+<div class="dcp-srp" :class="{ 'dcp-srp--hide-filters': !showFilters }" data-test-id="srp">
+  <sticky-bar class="dcp-srp__sticky-bar" :class="{ 'dcp-srp__sticky-bar--show': showStickyBar }">
+    <div class="dcp-srp-sticky-bar-content__price dcp-srp-sticky-bar-price">
+      <span class="dcp-srp-sticky-bar-price__amount">
+        {{ totalResults }}
+      </span>
+      <span class="dcp-srp-sticky-bar-price__label">
+        {{ $t('dcp.srp.cars') }}
+      </span>
+    </div>
+    <div class="dcp-srp-sticky-bar-content__actions dcp-srp-sticky-bar-actions">
+      <button class="dcp-srp-sticky-bar-actions__main-cta wb2-btn-01" @click="toggleVehicleDetails(true)">
+        <icon-filter-slider class="wb2-btn-03__icon" />
+        {{ `${$t('dcp.srp.filter')} (${selectedFilters.length})` }}
+      </button>
+    </div>
+  </sticky-bar>
+
+  <filter-widget class="dcp-srp__filters dcp-srp-filters" v-if="showFilters" v-intersection-observer="{}"
+    :filters="filters" :is-loading="isLoading" @change-filter="changeFilter"
+    @all-filters-pressed="toggleVehicleDetails(true)" @viewport-entered="showStickyBar = false"
+    @viewport-left="showStickyBar = true" />
+
+  <selected-filters v-if="showFilters" class="dcp-srp__selected-filters-widget" :filters="filters"
+    @change-filter="changeFilter" @clear-all-filters="resetAllFilters" />
+
+  <!-- product search result -->
+  <div class="dcp-srp__amount-and-sort dcp-srp-amount-and-sort">
+    <div class="dcp-srp__result-amount dcp-srp-result-amount" v-if="totalResults">
+      <span class="dcp-srp-result-amount__number" data-test-id="dcp-srp-result-amount__number">
+        {{ totalResults }}
+      </span>
+      <span class="dcp-srp-result-amount__label">
+        {{ $t('dcp.srp.cars') }}
+      </span>
+    </div>
+    <div class="dcp-srp__sorting-dropdown">
+      <filter-dropdown :options="sortOptions" :value="selectedSort" @input="changeSortOrder" v-if="sortOptions.length">
+      </filter-dropdown>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="dcp-srp__results dcp-srp-results">
+    <div class="dcp-srp-results__tile" v-for="(item, index) in searchResults" :key="index">
+      <product-tile :product="item"></product-tile>
+    </div>
+  </div>
+
+  <show-more class="dcp-srp__pagination" :current-number-of-items="searchResults.length"
+    :total-number-of-items="totalResults" @load="loadMoreResults">
+  </show-more>
+
+  <detail-filter-vehicle :filters="filters" :show="showVehicleDetails" @close="toggleVehicleDetails(false)"
+    @change-filter="changeFilter" @clear-all-filters="resetAllFilters" @apply-filters="applyFilters" />
+</div>

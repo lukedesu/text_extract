@@ -1,0 +1,65 @@
+<div class="dcp-rfq-contact" v-if="isContactFormReady">
+  <h2 class="dcp-rfq-contact__heading">
+    {{$t('dcp.rfq.contactDetails.title')}}
+  </h2>
+  <p class="dcp-rfq-contact__description">
+    {{$t('dcp.rfq.contactDetails.description')}}
+  </p>
+
+  <dynamic-form
+    class="dcp-rfq-contact__selection dcp-rfq-contact-selection"
+    :form-data="formData"
+    :form-schema="contactFormSchema"
+    :ui-schema="uiSchema"
+    @change="updateFormData"
+    @validity-change="updateFormValidity"
+    ref="form">
+  </dynamic-form>
+
+  <div
+    class="dcp-rfq-contact__explanation-container dcp-rfq-contact-explanation-container"
+    v-if="preconfiguredUserCreated">
+    <div class="dcp-rfq-contact-explanation-container__icon dcp-rfq-contact-explanation-container-icon">
+      <icon-info class="wb2-btn-03__icon dcp-rfq-contact-explanation-container-icon__image" />
+    </div>
+    <span class="dcp-rfq-contact-explanation-container__text">
+      There is no account available with the typed in e-mail address.
+      With proceeding the process an account will be created.
+    </span>
+  </div>
+
+  <div
+    class="dcp-rfq-contact__explanation-container dcp-rfq-contact-explanation-container"
+    v-if="userExists && !isAuthenticated">
+    <div class="dcp-rfq-contact-explanation-container__icon dcp-rfq-contact-explanation-container-icon">
+      <icon-info class="wb2-btn-03__icon dcp-rfq-contact-explanation-container-icon__image" />
+    </div>
+    <span class="dcp-rfq-contact-explanation-container__text">
+      There is an account available with the typed in e-mail address.
+      Please Login into your account to Request a Quote.
+    </span>
+  </div>
+
+  <error-handler :context="['rfq']"></error-handler>
+
+  <div class="dcp-rfq-contact__button-container dcp-rfq-contact-button-container">
+    <button
+      class="dcp-rfq-contact-button-container__button wb2-btn-01"
+      v-if="!userExists || isAuthenticated"
+      :class="{'wb2-btn-01--disabled': !formIsValid}"
+      :disabled="!formIsValid"
+      @click="nextStep()"
+      data-test-id="dcp-rfq-contact-button-container__button-next">
+      {{$t('dcp.rfq.contactDetails.buttonNextLabel')}}
+    </button>
+    <button
+      class="dcp-rfq-contact-button-container__button wb2-btn-01"
+      v-if="userExists && !isAuthenticated"
+      :class="{'wb2-btn-01--disabled': !formIsValid}"
+      :disabled="!formIsValid"
+      @click="triggerLogin()"
+      data-test-id="dcp-rfq-contact-button-container__button-login">
+      {{$t('dcp.rfq.contactDetails.buttonLoginLabel')}}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+.mp-monthly-rate {
+  @include wb2-spacing('margin', '0 xs');
+
+  &__display-text {
+    @include wb2-type-copy;
+  }
+
+  &__info-button {
+    @include wb2-spacing('padding-left', 'xxs');
+  }
+
+  &__info-icon {
+    transform: scale(1.5);
+  }
+}
+
+.mp-monthly-rate-breakdown {
+  &__headline {
+    @include wb2_type_hl-xs;
+    @include wb2-spacing('margin-bottom', 'xs');
+  }
+
+  &__list {
+    max-width: 800px;
+  }
+
+  &__list-item {
+    @include wb2-spacing('margin-bottom', 'xxs');
+
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+
+    &--highlight {
+      // #00adef is defined as color 'Highlight' in wb2
+      color: $wb2_color_pure-blue;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__list-item-label {
+    @include wb2_type_copy;
+
+    align-items: center;
+    display: flex;
+  }
+
+  &__list-item-reference {
+    @include wb2-spacing('margin-left', '3xs');
+
+    font-size: .75rem;
+    vertical-align: super;
+  }
+
+  &__list-item-icon {
+    @include wb2-spacing('margin-left', 'xxs');
+  }
+
+  &__list-item-value {
+    @include wb2_type_copy_strong;
+  }
+
+  &__disclaimer-list {
+    @include wb2-spacing('margin-top', 'xs');
+  }
+
+  &__disclaimer {
+    @include wb2-spacing('margin-bottom', 's');
+    @include wb2_type_hint;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: $wb2_color_grey;
+    }
+  }
+}

@@ -1,0 +1,91 @@
+<div class="dcp-header">
+  <div class="dcp-header__logo">
+    <div class="wb2-m-header-1__brandmark" @click="logoClicked" data-test-id="header-logo">
+      <img src="~@dcp-vue/platform-core/src/scss/workbench2.0-draft/assets/svg/MB-star_n_web.svg" class="wb2-m-header-1__star mb-star" alt="Mercedes-Benz">
+      <div class="wb2-m-header-1__claim-container">
+        <img src="~@dcp-vue/platform-core/src/scss/workbench2.0-draft/assets/svg/MB-wm_claim1DE_ra_n_web.svg" class="wb2-m-header-1__claim wb2-m-header-1__claim--de" alt="">
+        <img src="~@dcp-vue/platform-core/src/scss/workbench2.0-draft/assets/svg/MB-wm_claim1EN_ra_n_web.svg" class="wb2-m-header-1__claim wb2-m-header-1__claim--en" alt="">
+      </div>
+    </div>
+  </div>
+  <div class="dcp-header__nav dcp-header-nav">
+    <div v-if="!isAnonymous" class="dcp-header-nav__inline-menu dcp-header-nav-inline-menu">
+      <button class="dcp-header-nav-inline-menu__login dcp-header-nav-inline-menu-login wb2-link-small" @click="login" data-test-id="header-login" v-if="!loggedIn">
+        {{ $t('dcp.header.login') }}
+        <icon-user class="dcp-header-nav-inline-menu-login__icon"></icon-user>
+      </button>
+      <template v-else>
+        <button class="dcp-header-nav-inline-menu__logout wb2-link-small" @click="logout" data-test-id="header-logout">
+          {{ $t('dcp.header.logout') }}
+        </button>
+        <p class="dcp-header-nav-inline-menu__user dcp-header-nav-inline-menu-user">
+          <span class="dcp-header-nav-inline-menu-user__name">{{ user.fullName }}</span>
+          <icon-user class="dcp-header-nav-inline-menu-user__icon"></icon-user>
+        </p>
+      </template>
+    </div>
+    <a class="dcp-header-nav__menu-trigger dcp-header-nav-menu-trigger" @click.prevent="showFlyout = false" data-test-id="header-modal__close" v-if="showFlyout" key="close" href="#">
+      <icon-close class="dcp-header-nav-menu-trigger__icon"></icon-close>
+      <span class="dcp-header-nav-menu-trigger__label">{{ $t('dcp.header.menu.close') }}</span>
+    </a>
+    <a class="dcp-header-nav__menu-trigger dcp-header-nav-menu-trigger" @click.prevent="showFlyout = true" data-test-id="header-modal__open" v-else key="menu" href="#">
+      <icon-menu class="dcp-header-nav-menu-trigger__icon"></icon-menu>
+      <span class="dcp-header-nav-menu-trigger__label">{{ $t('dcp.header.menu.open') }}</span>
+    </a>
+  </div>
+  <div class="dcp-header__modal dcp-header-modal" :class="{
+      'dcp-header-modal--show': showFlyout,
+      'dcp-header-modal--hide': showFlyout === false
+    }"
+    ref="header-modal">
+    <div class="dcp-header-modal__content dcp-header-modal-content">
+      <div class="dcp-header-modal-content__profile dcp-header-modal-profile">
+        <div class="dcp-header-modal-profile__avatar dcp-header-modal-profile-avatar"
+          :class="{ 'dcp-header-modal-profile-avatar--logged-in': loggedIn }">
+          <icon-user class="dcp-header-modal-profile-avatar__icon"></icon-user>
+        </div>
+        <p class="dcp-header-modal-profile__name" v-if="loggedIn">{{ user.fullName }}</p>
+        <button v-else class="dcp-header-modal-profile__login wb2-btn-03" @click="login" data-test-id="header-modal__login">
+          <icon-arrow class="wb2-btn-03__icon"></icon-arrow>{{ $t('dcp.header.login') }}
+      </button>
+      </div>
+      <button v-if="loggedIn" class="wb2-btn-02 wb2-btn-02--theme-dark dcp-header-modal-content__action" @click="logout" data-test-id="header-modal__logout">
+        {{ $t('dcp.header.logout') }}
+      </button>
+      <button v-else class="wb2-btn-02 wb2-btn-02--theme-dark dcp-header-modal-content__action" @click="register" data-test-id="header-modal__register">
+        {{ $t('dcp.header.register') }}
+      </button>
+    </div>
+  </div>
+  <modal-popup
+    v-if="!isAnonymous"
+    modal-type="dialog"
+    data-test-id="frame-header__warning"
+    :is-open="showWarningModal"
+    @close="showWarningModal = false">
+    <template slot="content">
+      <div class="wb2-modal-dialog-content__section">
+        <h2 class="wb2-modal-03__headline wb2-modal-dialog__headline">
+          {{ $t('dcp.header.modal.title') }}
+        </h2>
+        <p class="wb2-modal-03__copy wb2-modal-dialog__copy">
+          {{ $t('dcp.header.modal.body') }}
+        </p>
+      </div>
+    </template>
+    <template slot="footer">
+      <button class="wb2-btn-02 wb2-modal-dialog-footer__cancel"
+        @click="showWarningModal = false"
+        v-track-event="'stay in checkout'"
+        data-test-id="modal-popup-03__cancel">
+        {{ $t('dcp.header.modal.cancel') }}
+      </button>
+      <button class="wb2-btn-01 wb2-modal-dialog-footer__save"
+        @click="deleteCartFromStoreRenewItAndGoHome"
+        v-track-event="'go back home'"
+        data-test-id="modal-popup-03__continue">
+        {{ $t('dcp.header.modal.continue') }}
+      </button>
+    </template>
+  </modal-popup>
+</div>

@@ -1,0 +1,125 @@
+{
+    "apiBaseUrl": "https://dev-1-otos-api.nonprod.amap.dcp.mbio.zone/dcp-api",
+    "apiMode": "dev",
+    "checkoutBaseUrl": "https://dev-1-otos-api.nonprod.amap.dcp.mbio.zone",
+    "ciamCookieDomain": ".nonprod.amap.dcp.mbio.zone",
+    "ciamMode": "in-place",
+    "cookieLinkBaseUrl": "https://e-services.mercedes-benz.com/cookie-service/cookie-site.html",
+    "cookieServiceBaseUrl": "https://e-services.mercedes-benz.com/cookie-service/public",
+    "defaultCurrency": "VND",
+    "defaultCurrencySymbol": "₫",
+    "defaultLocale": "en-vn",
+    "environment": "development",
+    "logLevel": "debug",
+    "overseasConfig": {
+        "additionalServices": {
+            "entries": [
+                "extended-warranty",
+                "insurance",
+                "genuine-accessories",
+                "maintenance-package"
+            ],
+            "footnotes": []
+        },
+        "contactDetails": {
+            "hidden": {
+                "nationalIdNumber": true,
+                "fullName": true,
+                "firstName": true
+            },
+            "required": [
+                "lastName",
+                "email",
+                "phone",
+                "consentDataPrivacy"
+            ],
+            "sfdcConsentMapping": {
+                "consentDataPrivacy": [
+                    "personalAgreement"
+                ],
+                "consentMarketing": [
+                    "optInEmail",
+                    "optInMail",
+                    "optInPhone",
+                    "optInSms"
+                ]
+            }
+        },
+        "disableDirectCheckout": true,
+        "financeOptions": {
+            "options": [
+                "cash"
+            ]
+        },
+        "footerLink": {
+            "copyrightLink": "https://shop.mercedes-benz.com/"
+        },
+        "isAnonymous": true,
+        "pdp": {
+            "hidden": {
+                "monthlyRate": true
+            },
+            "footnotes":
+            [
+                {
+                    "label": "dcp.pdp.footnotes.suggestedRetailPrice",
+                    "producer": "SuggestedRetailPrice"
+                },
+                {
+                    "label": "dcp.pdp.footnotes.vehicleSpecifications",
+                    "producer": "vehicleSpecifications"
+                },
+                {
+                    "label": "dcp.pdp.footnotes.vehicleDiff",
+                    "producer": "vehicleDiff"
+                },
+                {
+                    "label": "dcp.pdp.footnotes.vehicleFigures",
+                    "producer": "vehicleFigures"
+                }
+            ]
+        },
+        "srp": {
+            "footnotes":
+            [
+                {
+                    "label": "dcp.srp.footnotes.price",
+                    "producer": "BuyBox"
+                },
+                {
+                    "label": "dcp.srp.footnotes.vehicleRange",
+                    "producer": "BuyBox"
+                },
+                {
+                    "label": "dcp.srp.footnotes.dealerLocation",
+                    "producer": "BuyBox"
+                },
+                {
+                    "label": "dcp.srp.footnotes.images",
+                    "producer": "BuyBox"
+                }
+            ]
+        },
+        "productTile": {
+            "hidden": {
+                "dealerLocation": false,
+                "dealerName": false,
+                "monthlyRate": true,
+                "price": false
+            }
+        },
+        "tradeIn": {
+            "vehicleDetails": {
+                "fields": [
+                    "make-and-model",
+                    "year",
+                    "mileage"
+                ]
+            }
+        }
+    },
+    "shopBaseUrl": "/en-vn/shop",
+    "shopCountry": "VN",
+    "shopHomeUrl": "https://dev-1-otos.nonprod.amap.dcp.mbio.zone/en-vn/shop/srp",
+    "siteId": "dcp-mp-vn"
+}

@@ -1,0 +1,39 @@
+<div>
+  <div class="dcp-filter-widget">
+    <!-- model and body type filters -->
+    <filter-wrapper
+      v-for="filter in vehicleCategoryFilters" :key="filter.code"
+      :filter="filter"
+      @change="changeFilter" />
+
+    <!-- all other filters -->
+    <tab-view class="dcp-filter-widget__tabs dcp-filter-widget-tabs" :tabs="filterTabs">
+      <template v-for="filter in generalFilters" :slot="filter.name">
+        <filter-wrapper v-if="filter.type === Enums.FilterTypes.Slider" :filter="filter" @change="changeFilterDebounced" />
+        <filter-wrapper v-else :filter="filter" @change="changeFilter" />
+      </template>
+      <filter-location slot="Location" @change="changeFilter" />
+    </tab-view>
+
+    <hr class="dcp-filter-widget__divider">
+
+    <!-- detail filter trigger -->
+    <button
+      class="dcp-filter-widget__show-modal dcp-filter-widget-show-modal"
+      :class="{'wb2-btn-01': isMobileDevice, 'wb2-btn-03': !isMobileDevice}"
+      @click="openAllFilters"
+      data-test-id="dcp-srp-filters__show-modal">
+      <icon-filter-slider
+        class="dcp-filter-widget-show-modal__icon"
+        :class="{'wb2-btn-01__icon': isMobileDevice, 'wb2-btn-03__icon': !isMobileDevice}"/>
+      {{ `${$t('dcp.srp.filters.showAllFilter')}` }}
+      <span class="dcp-filter-widget-show-modal__number-of-filters">
+        {{ `(${filters.length})` }}
+      </span>
+    </button>
+  </div>
+
+  <!-- loader -->
+  <loading-linear :loading="isLoading"></loading-linear>
+</div>
+

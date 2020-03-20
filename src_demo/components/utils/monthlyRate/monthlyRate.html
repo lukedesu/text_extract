@@ -1,0 +1,54 @@
+<section
+  class="mp-monthly-rate"
+  v-if="monthlyRate"
+  @click.stop="/* stop propagation to avoid opening the PDP */">
+  <span
+    class="mp-monthly-rate__display-text"
+    v-if="monthlyRate.formattedValue"
+    @click="toggleMonthlyRateBreakdownModal(true)"
+    >{{ $t('dcp.srp.productTile.monthlyRate.displayText', { formattedValue: monthlyRate.formattedValue }) }}</span>
+  <a
+    class="mp-monthly-rate__info-button wb2-btn-03"
+    data-test-id="mp-monthly-rate-info-button"
+    v-if="isBreakdownAvailable"
+    @click="toggleMonthlyRateBreakdownModal(true)">
+    <icon-info class="wb2-btn-03__icon mp-monthly-rate__info-icon" />
+  </a>
+  <modal-popup
+    modal-type="info"
+    class="mp-monthly-rate__modal"
+    v-if="isBreakdownAvailable"
+    :is-open="showMonthlyRateBreakdownModal"
+    @close="toggleMonthlyRateBreakdownModal(false)"
+    data-test-id="mp-monthly-rate-modal">
+    <template slot="content">
+      <section class="mp-monthly-rate-breakdown">
+        <h2 class="mp-monthly-rate-breakdown__headline">{{ $t('mp.monthlyRateBreakdown.headline') }}</h2>
+        <ul class="mp-monthly-rate-breakdown__list">
+          <li
+            class="mp-monthly-rate-breakdown__list-item"
+            :class="{ 'mp-monthly-rate-breakdown__list-item--highlight': item.highlight }"
+            :key="item.id"
+            :title="item.infoTextKey"
+            v-for="item in breakdownItems">
+              <span class="mp-monthly-rate-breakdown__list-item-label">
+                {{ item.label }}
+                <sup class="mp-monthly-rate-breakdown__list-item-reference" v-if="item.disclaimerIndex !== undefined">[{{ item.disclaimerIndex + 1 }}]</sup>
+                <icon-info class="mp-monthly-rate-breakdown__list-item-icon" v-if="item.infoTextKey" />
+              </span>
+              <span class="mp-monthly-rate-breakdown__list-item-value">{{ item.value }}</span>
+          </li>
+        </ul>
+        <ul class="mp-monthly-rate-breakdown__disclaimer-list">
+          <li
+            class="mp-monthly-rate-breakdown__disclaimer"
+            :key="disclaimer.id"
+            v-for="disclaimer in disclaimers">
+            <span class="mp-monthly-rate-breakdown__disclaimer-reference">[{{ disclaimer.disclaimerIndex + 1 }}] </span>
+            <span class="mp-monthly-rate-breakdown__disclaimer-text" v-html="disclaimer.disclaimer"></span>
+          </li>
+        </ul>
+      </section>
+    </template>
+  </modal-popup>
+</section>

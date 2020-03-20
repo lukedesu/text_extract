@@ -1,0 +1,65 @@
+{
+  "home": {
+    "name": "home"
+  },
+  "srp": {
+    "name": "srp"
+  },
+  "pdp": {
+    "name": "pdp"
+  },
+  "tinyPdp": {
+    "name": "tinyPdp"
+  },
+  "configuration": {
+    "name": "configuration"
+  },
+  "tradeInYN": {
+    "name": "tradeInYN"
+  },
+  "vinYN": {
+    "name": "vinYN"
+  },
+  "vehicleFunnel": {
+    "name": "vehicleFunnel"
+  },
+  "vinInput": {
+    "name": "vinInput"
+  },
+  "tradeInVehicleDetails": {
+    "name": "tradeInVehicleDetails"
+  },
+  "tradeInVehicleResults": {
+    "name": "tradeInVehicleResults"
+  },
+  "tradeInQuote": {
+    "name": "tradeInQuote"
+  },
+  "downstreamPaymentOption": {
+    "name": "downstreamPaymentOption"
+  },
+  "downstreamPaymentCalculation": {
+    "name": "downstreamPaymentCalculation"
+  },
+  "recommendations": {
+    "name": "recommendations"
+  },
+  "cart": {
+    "name": "cart"
+  },
+  "loginRegister": {
+    "name": "loginRegister"
+  },
+  "payment": {
+    "name": "payment"
+  },
+  "cartOverview": {
+    "name": "cartOverview"
+  },
+  "confirmation": {
+    "name": "confirmation"
+  },
+  "error": {
+    "name": "error"
+  }
+}
